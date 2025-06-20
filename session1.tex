@@ -1,0 +1,162 @@
+\documentclass[letter]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+
+%% Sets page size and margins
+\usepackage[top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{array}
+\usepackage[shortlabels]{enumitem}
+\usepackage[final]{pdfpages}
+\usepackage[normalem]{ulem}
+\usepackage{cancel}
+\usepackage{xspace,mdwlist}
+\usepackage{algorithmic}
+\usepackage{mathtools}
+\usetikzlibrary{calc}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{claim}{Claim}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+
+\def\coursename{CS 201: Data Structures}
+
+%% make title box
+\newcommand{\header}[1]{%
+	\begin{center}
+		\fbox{
+			\begin{minipage}{6in}
+				\textbf{\coursename} \hfill       \\
+				\textit{#1} \hfill \textit{\today}
+			\end{minipage}
+		}
+	\end{center}
+	\vspace*{4mm}
+}
+
+\def\problem#1#2#3{
+\fbox{
+\begin{minipage}{0.8\textwidth}
+{\sc #1:}
+
+\begin{description*}
+\item[Given:] #2
+\item[Find:] #3
+\end{description*}
+\end{minipage}
+}
+\bigskip
+}
+
+
+\begin{document}
+
+\header{Week 1}
+
+\begin{enumerate}[1.] 
+    \item Answer the following questions (from WI20 prefect)
+    \begin{itemize}
+        \item [(a)] True / False: You need to recompile a Java program every time you make a code change and want to run it. 
+        \item [(b)] True / False: By convention, the class name of a Java program usually matches the file name, but it doesn't have to.
+        \item [(c)] True / False: You can get errors in Java both at compile time and at run time.
+        \item [(d)] True / False: Java is a statically typed language, while Python is dynamically typed.
+        \item [(e)] True / False: Primitive type variables are stored in the heap memory while reference type variables are stored in the environment.
+        \item [(f)] What does the following code output, and why?
+        \begin{verbatim}
+        String x = "Hello";
+        String y = x;
+        x = "Hi";
+        System.out.println(y);
+        \end{verbatim}
+    \end{itemize}
+
+    
+    \item What is stored in result after the following statements execute (Question from Koffman-Wolfgang)
+    \begin{verbatim}
+    StringBuilder result = new StringBuilder();
+    String sentence = "Let’s all learn how to program in Java";
+    String[] tokens = sentence.split(" ");
+    for (String token : tokens) {
+        result.append(token);
+    }
+    \end{verbatim}
+        
+    \item Look at the following code and answer the questions below
+
+    \lstset{language=Java, 
+        basicstyle=\ttfamily\small, 
+        showstringspaces=false,
+	numbers=left,
+	frame=single,
+	tabsize=4,
+	commentstyle=,
+}
+    \begin{lstlisting}
+public class Dog {
+    private String breed;
+    private int age;
+    private static int dogCount = 0;
+
+    public Dog(String breed, int age) {
+        this.breed = breed;
+        this.age = age;
+        dogCount++;
+    }
+
+    public static int displayCount() {
+        return dogCount;
+    }
+
+    public void setAge(int age) {
+        if (age < 0) {
+            System.out.println("Age must be >= 0");
+        }
+        else {
+            this.age = age;
+        }
+    }
+
+    public String Stats() {
+        return "Breed = " + breed + " Age = " + Integer.toString(age);
+    }       
+}
+    \end{lstlisting} Explain what the following keywords do:
+    \begin{enumerate}[a)]
+    	\item public (line 1)
+            \item public (line 12)
+    	\item private (line 2)
+    	\item static (line 4)
+            \item static (line 12)
+            \item this (line 7)
+            \item void (line 16)
+    \end{enumerate}
+
+    \item Write a \textit{CarletonStudents} class (in Java) with instance variables \textit{name}, \textit{major}, \textit{year}, \textbf{which can only be 2024, 2025, 2026, or 2027.} Include methods:
+    \begin{itemize}
+        \item \textit{setYear(int x)}, which sets the class year of the student. 
+        \item \textit{getYear()}, which returns the student's class year
+    \end{itemize}
+    
+     Think about what constructors you want and the security of the instance variables.
+    
+
+    
+\end{enumerate}
+
+
+\end{document}

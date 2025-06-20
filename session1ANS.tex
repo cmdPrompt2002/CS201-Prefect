@@ -1,0 +1,193 @@
+\documentclass[letter]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+
+%% Sets page size and margins
+\usepackage[top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{array}
+\usepackage[shortlabels]{enumitem}
+\usepackage[final]{pdfpages}
+\usepackage[normalem]{ulem}
+\usepackage{cancel}
+\usepackage{xspace,mdwlist}
+\usepackage{algorithmic}
+\usepackage{mathtools}
+\usetikzlibrary{calc}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{claim}{Claim}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+
+\def\coursename{CS 201: Data Structures}
+
+%% make title box
+\newcommand{\header}[1]{%
+	\begin{center}
+		\fbox{
+			\begin{minipage}{6in}
+				\textbf{\coursename} \hfill       \\
+				\textit{#1} \hfill \textit{\today}
+			\end{minipage}
+		}
+	\end{center}
+	\vspace*{4mm}
+}
+
+\def\problem#1#2#3{
+\fbox{
+\begin{minipage}{0.8\textwidth}
+{\sc #1:}
+
+\begin{description*}
+\item[Given:] #2
+\item[Find:] #3
+\end{description*}
+\end{minipage}
+}
+\bigskip
+}
+
+
+\begin{document}
+
+\header{Week 1 Answer Key}
+
+\begin{enumerate}[1.] 
+    \item Answer the following questions (from WI20 prefect)
+    \begin{itemize}
+        \item [(a)] True / False: You need to recompile a Java program every time you make a code change and want to run it. \textit{TRUE}
+        \item [(b)] True / False: By convention, the class name of a Java program usually matches the file name, but it doesn't have to. \textit{FALSE}
+        \item [(c)] True / False: You can get errors in Java both at compile time and at run time. \textit{TRUE}
+        \item [(d)] True / False: Java is a statically typed language, while Python is dynamically typed. \textit{TRUE}
+        \item [(e)] True / False: Primitive type variables are stored in the heap memory while reference type variables are stored in the environment \textit{FALSE}
+        \item [(f)] What does the following code output, and why?
+        \begin{verbatim}
+        String x = "Hello";
+        String y = x;
+        x = "Hi";
+        System.out.println(y);
+        \end{verbatim} 
+        Outputs \textbf{Hello}
+        
+        Strings are immutable, meaning that once a string object is assigned a value, you can't modify that value. The line \textbf(x = "Hi") creates a new String object which is then assigned to the variable x, while the variable y still points to the old "Hello" object.
+        
+    \end{itemize}
+
+    
+    \item What is stored in result after the following statements execute (Question from Koffman-Wolfgang)
+    \begin{verbatim}
+    StringBuilder result = new StringBuilder();
+    String sentence = "Let’s all learn how to program in Java";
+    String[] tokens = sentence.split(" ");
+    for (String token : tokens) {
+        result.append(token);
+    }
+    \end{verbatim}
+
+    ”Let’salllearnhowtoprograminJava”
+        
+    \item Look at the following code and answer the questions below
+
+    \lstset{language=Java, 
+        basicstyle=\ttfamily\small, 
+        showstringspaces=false,
+	numbers=left,
+	frame=single,
+	tabsize=4,
+	commentstyle=,
+}
+    \begin{lstlisting}
+public class Dog {
+    private String breed;
+    private int age;
+    private static int dogCount = 0;
+
+    public Dog(String breed, int age) {
+        this.breed = breed;
+        this.age = age;
+        dogCount++;
+    }
+
+    public static int displayCount() {
+        return dogCount;
+    }
+
+    public void setAge(int age) {
+        if (age < 0) {
+            System.out.println("Age must be >= 0");
+        }
+        else {
+            this.age = age;
+        }
+    }
+
+    public String Stats() {
+        return "Breed = " + breed + " Age = " + Integer.toString(age);
+    }       
+}
+    \end{lstlisting} Explain what the following keywords do:
+    \begin{enumerate}[a)]
+    	\item public (line 1) Can create a Dog object and use its methods in any other classes
+            \item public (line 12) Can use this method in any other classes
+    	\item private (line 2) The variable can't be accessed or modified by any class except the class Dog. For example, if we write dogName.age = 10 in a different class, then there will be an error.
+    	\item static (line 4) dogCount (number of dogs) is not an attribute that belongs to any one Dog object. The static keyword makes the dogCount variable not an instance variable, but a variable that belongs to the Dog class. 
+            \item static (line 12) Static methods can access/modify static variables and does not involve creating/reference any Dog object.
+            \item this (line 7) ensures that the .breed refers to the instance variable and not the parameter.
+            \item void (line 16) a void function returns nothing.
+    \end{enumerate}
+
+    \item Write a \textit{CarletonStudents} class (in Java) with instance variables \textit{name}, \textit{major}, \textit{year}, \textbf{which can only be 2024, 2025, 2026, or 2027.} Include methods:
+    \begin{itemize}
+        \item \textit{setYear(int x)}, which sets the class year of the student. 
+        \item \textit{getYear()}, which returns the student's class year
+    \end{itemize}
+    
+     Think about what constructors you want and the security of the instance variables.
+
+    \begin{verbatim}
+    public class CarletonStudents {
+        private int year;
+        private String major;
+        private String name;
+
+        public CarletonStudents(String name, String major, int year) {
+            this.name = name;
+            this.major = major;
+            this.year = year;
+        }
+        public void setYear(int year) {
+            if (year > 2027 || year < 2024) {
+                System.out.println("Appropriate range of year: 2024-2027");
+            }
+            else {
+                this.year = year;
+            }
+        }
+
+        public int getYear() {
+            return this.year;
+        }
+    }
+    \end{verbatim}
+    
+
+\end{enumerate}
+
+
+\end{document}

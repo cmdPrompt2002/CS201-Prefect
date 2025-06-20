@@ -1,0 +1,180 @@
+\documentclass[letter]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{stmaryrd}
+
+%% Sets page size and margins
+\usepackage[top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{array}
+\usepackage[shortlabels]{enumitem}
+\usepackage[final]{pdfpages}
+\usepackage[normalem]{ulem}
+\usepackage{cancel}
+\usepackage{xspace,mdwlist}
+\usepackage{algorithmic}
+\usepackage{mathtools}
+\usetikzlibrary{calc}
+
+\usepackage{courier} %% Sets font for listing as Courier.
+\usepackage{listings, xcolor}
+\lstset{
+tabsize = 4, %% set tab space width
+showstringspaces = false, %% prevent space marking in strings, string is defined as the text that is generally printed directly to the console
+numbers = left, %% display line numbers on the left
+commentstyle = \color{green}, %% set comment color
+keywordstyle = \color{blue}, %% set keyword color
+stringstyle = \color{red}, %% set string color
+rulecolor = \color{black}, %% set frame color to avoid being affected by text color
+basicstyle = \small \ttfamily , %% set listing font and size
+breaklines = true, %% enable line breaking
+numberstyle = \tiny,
+}
+
+
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{claim}{Claim}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+
+\def\coursename{CS 201: Data Structures}
+
+%% make title box
+\newcommand{\header}[1]{%
+	\begin{center}
+		\fbox{
+			\begin{minipage}{6in}
+				\textbf{\coursename} \hfill       \\
+				\textit{#1} \hfill \textit{\today}
+			\end{minipage}
+		}
+	\end{center}
+	\vspace*{4mm}
+}
+
+\def\problem#1#2#3{
+\fbox{
+\begin{minipage}{0.8\textwidth}
+{\sc #1:}
+
+\begin{description*}
+\item[Given:] #2
+\item[Find:] #3
+\end{description*}
+\end{minipage}
+}
+\bigskip
+}
+
+
+\begin{document}
+
+\header{Week 2 Answer}
+
+\begin{enumerate} [1.]
+    \item 
+    \begin{itemize}
+        \item [(a)] True/false : method overriding is when we modify an inherited method, so that the method in the subclass has different behavior from that of the superclass. TRUE
+        \item [(b)] 1b) True/false : method overloading is when we have more than one method with the same signature but different behavior. FALSE
+        \item [(c)] 1c True/false : static methods can access instance variables, but can’t modify them. FALSE
+        \item [(d)] 1d) Suppose Shape is an interface and Rectangle is a class implementing the interface Shape. What is the difference between x and y, in terms of what methods they can use?
+        
+        
+        Shape x = new Rectangle();
+        Rectangle y = new Rectangle();
+
+        x can use implemented methods from Shape, but can’t use methods that are specific to Rectangle.
+        y can use both the implemented methods from Shape and methods that are specific to Rectangle.
+    \end{itemize}
+
+    \item How does an interface differ from a class implementation? (Question from Carrano)
+
+    Basically, an interface describes what a class that implements it does
+    while the class implementation also includes how it's done. Interfaces don’t
+    contain the contents of any methods, the exact way in which they carry out
+    their goals.
+
+    \item Write an interface for a Plant. Classes implementing Plant must be able to report their height and be watered (have their water level increase an integer amount).
+
+    \begin{lstlisting}[language = Java , frame = trBL , firstnumber = 0 , escapeinside={(*@}{@*)}]
+    /* An interface describing plant classes */
+    public interface Plant {
+
+        /* Returns the height of a plant 
+        @return A int, the height */
+        public int findHeight();
+
+        /* Changes the water level by amount
+        @param An integer, the amount the water level changes */
+        public void water(int amount);
+    }
+    \end{lstlisting}
+
+    \item Write a class Sunflower that implements Plant. 
+    
+    Instance variables:
+    \begin{enumerate}
+        \item height
+        \item height
+        \item numSeeds - the number of seeds in a Sunflower object.
+    \end{enumerate}
+    
+    Methods:
+    \begin{enumerate}
+        \item All methods specified by the Plant interface
+        \item howManySeeds() - returns numSeeds
+    \end{enumerate}
+
+    \newpage
+
+    \begin{lstlisting}[language = Java , frame = trBL , firstnumber = 0 , escapeinside={(*@}{@*)}]
+    class Sunflower implements Plant {
+    private double height;
+    private int waterLevel;
+    private int numSeeds;
+    
+    public Sunflower(double height, int waterLevel, int numSeeds) {
+        this.height = height;
+        this.waterLevel = waterLevel;
+        this.numSeeds = numSeeds;
+    }
+    public int findHeight() {
+        return height;
+    }
+    public void water(int amount) {
+        waterLevel += amount;
+    }
+    public int howManySeeds() {
+        return numSeeds;
+    }
+    \end{lstlisting}
+    
+    \item Suppose I have a variable collection, which is a Plant[] array that stores different objects that implement the interface Plant. One of those objects is a Sunflower. Write a code to find which index of the Plant[] array contains a Sunflower object. If that index contains a Sunflower object, print out the index and the number of seeds.
+
+    \begin{lstlisting}[language = Java , frame = trBL , firstnumber = 0 , escapeinside={(*@}{@*)}]
+for (int i = 0; i < collection.length; i++) {
+    if (collection[i] instanceof Sunflower) {
+	int num = ((Sunflower)collection[i]).howManySeeds();
+	System.out.println("index: " + i + " Number of seeds: " + num);
+    }
+}
+    \end{lstlisting}
+
+    
+\end{enumerate}
+\end{document}

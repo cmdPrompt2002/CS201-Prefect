@@ -1,0 +1,275 @@
+\documentclass[letter]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{stmaryrd}
+
+%% Sets page size and margins
+\usepackage[top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{array}
+\usepackage[shortlabels]{enumitem}
+\usepackage[final]{pdfpages}
+\usepackage[normalem]{ulem}
+\usepackage{cancel}
+\usepackage{xspace,mdwlist}
+\usepackage{algorithmic}
+\usepackage{mathtools}
+\usetikzlibrary{calc}
+
+\usepackage{courier} %% Sets font for listing as Courier.
+\usepackage{listings, xcolor}
+\lstset{
+tabsize = 4, %% set tab space width
+showstringspaces = false, %% prevent space marking in strings, string is defined as the text that is generally printed directly to the console
+numbers = left, %% display line numbers on the left
+commentstyle = \color{green}, %% set comment color
+keywordstyle = \color{blue}, %% set keyword color
+stringstyle = \color{red}, %% set string color
+rulecolor = \color{black}, %% set frame color to avoid being affected by text color
+basicstyle = \small \ttfamily , %% set listing font and size
+breaklines = true, %% enable line breaking
+numberstyle = \tiny,
+}
+
+
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{claim}{Claim}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+
+\def\coursename{CS 201: Data Structures}
+
+%% make title box
+\newcommand{\header}[1]{%
+	\begin{center}
+		\fbox{
+			\begin{minipage}{6in}
+				\textbf{\coursename} \hfill       \\
+				\textit{#1} \hfill \textit{\today}
+			\end{minipage}
+		}
+	\end{center}
+	\vspace*{4mm}
+}
+
+\def\problem#1#2#3{
+\fbox{
+\begin{minipage}{0.8\textwidth}
+{\sc #1:}
+
+\begin{description*}
+\item[Given:] #2
+\item[Find:] #3
+\end{description*}
+\end{minipage}
+}
+\bigskip
+}
+
+
+\begin{document}
+
+\header{Exam prep}
+
+\begin{enumerate} [1.]
+    \item Java OOP
+    \begin{itemize}
+        \item [(a)] What is a disadvantage of making a data field in a class public? 
+
+        \item [(b)] Describe the difference between inheritance and interfaces. Give an example of when you may want to use inheritance in your code, and when you may want to use an interface. 
+
+        \item [(c)] Consider the following inheritance hierarchy. (Modified from USC). 
+
+        \begin{verbatim}
+public class Display {
+    public void something() {
+        System.out.println("Foo!");
+    }
+}
+
+public class DiceDisplay extends Display {
+    private int numSides;
+
+    //Constructor
+    public DiceDisplay(int numSides) {
+        this.numSides = numSides;
+    }
+
+    @Override
+    public void something() {
+        System.out.println("Zap!");
+    }
+    
+    public int showNumSides() {
+        System.out.println(numSides);
+    }
+}
+        \end{verbatim}
+
+    What is the output each following case? Can you identify which lines will produce an error?\\\\
+    Display A = new Display();\\
+    A.something();\\
+    A.showNumSides();\\
+    ((DiceDisplay) A).showNumSides();\\
+    
+    Display B = new DiceDisplay(1);\\
+    B.something();\\
+    B.showNumSides();\\
+    ((DiceDisplay) B).showNumSides();\\
+
+    DiceDisplay C = new DiceDisplay(2);\\
+    C.something();\\
+    C.showNumSides();\\
+    ((Display) C).something();\\
+
+    \item [(d)] How does variable type and object type determines which methods we can perform?
+        
+
+    \item [(e)] In the constructor of VeryFun, what is the purpose of super(title)? What does it do?
+
+        \begin{verbatim}
+public class Fun {
+    private String title;
+
+    public Fun(String title) {
+        this.title = title;
+    }
+    
+    public void potato(int a) {
+        System.out.println(a);
+        System.out.println(title);
+    }
+}
+public class VeryFun extends Fun {
+    private String title2;
+
+    public VeryFun(String title, String title2) {
+        super(title); //WHY DO WE NEED THIS?
+        this.title2 = title2;
+    }
+
+    public void potato(int a) {
+        int b = a + 1;
+        System.out.println(b);
+    }
+
+    public void strawberry() {
+        System.out.print(title2);
+    }
+
+}
+        
+        \end{verbatim}
+
+    \end{itemize}
+
+    \item Lists
+    \begin{itemize}
+        \item [(a)] Complete the following table by adding the runtime for each method: 
+        
+        
+        \begin{tabular}{|l|l|l|l|}
+\hline
+Method & ArrayList & Singly linked list & Doubly linked list \\ \hline
+add(E item) &  &  &  \\ \hline
+add(E item, int pos) &  &  &  \\ \hline
+remove(int pos) &  &  &  \\ \hline
+contains(E item) &  &  &  \\ \hline
+get(int pos) &  &  &  \\ \hline
+isEmpty() &  &  &  \\ \hline
+size() &  &  &  \\ \hline
+\end{tabular}
+
+
+        \item [(b)] If I expect to be inserting a lot of elements at the beginning of a list, should I use a dynamic array (like arrayList) or a Linked List? Why? (Question from Ellie Mamantov)
+
+        \item [(c)] Write a method for a singly linkedlist class \textbf{public SimpleLinkedList<E> reverse()} that returns a new linked list but with items in the reversed order.\\
+
+        For example, if lst is a linked list with items {1,2,3} then lst.reversed() should return a new linked list with items {3,2,1}
+
+        \newpage
+
+\begin{verbatim}
+
+public SimpleLinkedList<E> reverse() {
+    SimpleLinkedList<E> reversed = new SimpleLinkedList<E>();
+        
+    if (numItems > 0) {
+        Node<E> temp = head; 
+        //Your code here
+
+
+        
+            
+        while(..................) {
+        //Your code here
+
+
+
+            
+        }       
+    }
+    return .........;
+}
+
+\end{verbatim}
+    \end{itemize}
+
+    \item Radix sort: show the steps radix sort would take to sort the following numbers. 89 3 768 23 143 50 9 7 36
+
+    \item Big-O
+    \begin{itemize}
+        \item [(a)] When evaluating the efficiency of a program, why do we use big-O notation instead of the \textit{performance}, which is the actual time to run the program?\\\\\\\\\\
+        \item [(b)] In one sentence, what does big-O measure?\\\\\\\\\\
+        \item [(c)] What is the big-O of the following method? (Modified from Carrano)
+
+        \begin{verbatim}
+public static void hmmmmmm(int n) {
+    for (int i=0; i < n; i++) {
+        for (int j = 0; j < 1000000; j++) {
+            System.out.println("Good luck!") //You may assume that this is O(1)
+        }
+    }
+}
+        \end{verbatim}
+        \item [(d)] What is the big-O of the following method?
+
+\begin{verbatim}
+public Integer[] whatIsThis(int numItems) {
+    Integer[] numArray = new Integer[numItems];
+    for (int i=0; i < numItems; i++) {
+        int sum = 0;
+        for (int j = i; j < numItems; j++) {
+            sum += j;
+        }
+        numArray[i] = sum;
+    }
+    return numArray;
+}
+\end{verbatim}
+        
+
+        
+    \end{itemize}
+
+    
+
+
+    
+\end{enumerate}
+\end{document}

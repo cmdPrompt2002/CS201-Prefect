@@ -1,0 +1,246 @@
+\documentclass[letter]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{stmaryrd}
+
+%% Sets page size and margins
+\usepackage[top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{array}
+\usepackage[shortlabels]{enumitem}
+\usepackage[final]{pdfpages}
+\usepackage[normalem]{ulem}
+\usepackage{cancel}
+\usepackage{xspace,mdwlist}
+\usepackage{algorithmic}
+\usepackage{mathtools}
+\usetikzlibrary{calc}
+
+\usepackage{courier} %% Sets font for listing as Courier.
+\usepackage{listings, xcolor}
+\lstset{
+tabsize = 4, %% set tab space width
+showstringspaces = false, %% prevent space marking in strings, string is defined as the text that is generally printed directly to the console
+numbers = left, %% display line numbers on the left
+commentstyle = \color{green}, %% set comment color
+keywordstyle = \color{blue}, %% set keyword color
+stringstyle = \color{red}, %% set string color
+rulecolor = \color{black}, %% set frame color to avoid being affected by text color
+basicstyle = \small \ttfamily , %% set listing font and size
+breaklines = true, %% enable line breaking
+numberstyle = \tiny,
+}
+
+
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{claim}{Claim}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+
+\def\coursename{CS 201: Data Structures}
+
+%% make title box
+\newcommand{\header}[1]{%
+	\begin{center}
+		\fbox{
+			\begin{minipage}{6in}
+				\textbf{\coursename} \hfill       \\
+				\textit{#1} \hfill \textit{\today}
+			\end{minipage}
+		}
+	\end{center}
+	\vspace*{4mm}
+}
+
+\def\problem#1#2#3{
+\fbox{
+\begin{minipage}{0.8\textwidth}
+{\sc #1:}
+
+\begin{description*}
+\item[Given:] #2
+\item[Find:] #3
+\end{description*}
+\end{minipage}
+}
+\bigskip
+}
+
+
+\begin{document}
+
+\header{Week 3 Answer}
+
+\begin{enumerate}[1.] 
+    \item Explain the following terms
+    \begin{itemize}
+        \item [(a)] ADT: a specification of data items and operations that perform on those data items. No information about implementation are included.
+        \item [(b)] Interface: in Java, an interface as a class with abstract methods (methods with signatures but without a body). Classes that implements an interface must implement all the methods from the interface.
+    \end{itemize}
+    \item Suppose we have a single linked list:
+    
+    head -> [3 -]-> [10 -]-> [17 -]-> [25 -]-> null 
+    
+    What is the effect of the following code fragment on the linked list? (Might be helpful to draw a diagram).
+    \begin{itemize}
+        \item [(a)] \begin{verbatim}
+        Node<Integer> nodeRef = head.next;
+        nodeRef.data = 50;
+
+        head -> [3 -]-> [50 -]-> [17 -]-> [25 -]-> null
+        \end{verbatim}
+        \item [(b)] \begin{verbatim}
+        Node<Integer> nodeRef = head.next;
+        head.next = nodeRef.next;
+
+        head -> [3 -]-> [17 -]-> [25 -]-> null
+        \end{verbatim}
+        \item [(c)] \begin{verbatim}
+        Node<Integer> nodeRef = new Node<Integer>(19);
+        head = nodeRef;
+
+        head -> [19 -]-> null
+        \end{verbatim}
+        
+    \end{itemize}
+    
+    \item Write the following static method: (Question from Koffman and Elliot)
+    
+    /** Replaces each occurrence of oldItem in aList with newItem. */
+    public static void replace(ArrayList<String> aList, String oldItem,
+    String newItem). 
+
+    \begin{lstlisting}[language = Java , frame = trBL , firstnumber = 0 , escapeinside={(*@}{@*)}]
+    public static void replace(ArrayList<String> aList, String oldItem,
+    String newItem) {
+        for (int i = 0; i < aList.size(); i++) {
+            if (aList.get(i).equals(oldItem)) {
+                aList.set(i, newItem);
+            }
+        }
+        return aList;
+    }
+    \end{lstlisting}
+
+    \newpage
+
+    \item In the class SimpleLinekdList, write a function indexOf(E item) which returns the index of the linked list that contains the item.
+
+    \begin{lstlisting}[language = Java , frame = trBL , firstnumber = 0 , escapeinside={(*@}{@*)}]
+    public int indexOf(E item) {
+        int indexToReturn = 0;
+        Node<E> temp = head;
+        while (temp != null) {
+            if ((temp.data).equals(item)) {
+                break;
+            }
+            temp = temp.next;
+            indexToReturn++;
+        }
+        if (count >= numItems) {
+            return -1;
+        }
+        return indexToReturn;
+    }
+    
+    
+    \end{lstlisting}
+
+    
+    \item In the class SimpleLinkedList, write a function mergeList(SimpleLinkedList<E> newList, int pos) which adds a linked list newList into the current linked list at position pos. 
+
+    \begin{lstlisting}[language = Java , frame = trBL , firstnumber = 0 , escapeinside={(*@}{@*)}]
+    public void mergeList(SimpleLinkedList<E> newList, int pos) {
+        if (pos < 0 || pos > numItems || newList.numItems == 0) { throw new IndexOutOfBoundsException(); }
+        if (pos == 0) {
+            Node<E> temp = newList.head;
+            
+            while (temp.next != null) {
+                temp = temp.next;
+                numItems++;
+            }
+            numItems++;
+            //After while loop ends, temp is the last node in the newList
+            temp.next = head;
+            head = newList.head;
+
+        } else {
+            Node<E> temp = head;
+            int i = 0;
+            while (i < pos - 1) {
+                temp = temp.next;
+                i++;
+            }
+            //After while loop ends, temp is the node before pos.
+            Node<E> temp2 = temp.next; 
+            temp.next = newList.head;
+            
+            while (temp.next != null) {
+                temp = temp.next;
+                numItems++;
+            }
+            //After while loop ends, temp is the last node in the newList
+            temp.next = temp2;
+        }
+    }
+    \end{lstlisting}
+
+    \newpage
+    \item The following function is supposed to remove an item at index pos from a single-linked list. Can you identify four problems with this function and fix them?
+
+        
+    \begin{lstlisting}[language = Java , frame = trBL , firstnumber = 0 , escapeinside={(*@}{@*)}]
+    public E remove(int pos) {
+        // If we're removing head, do something specific:
+        if (pos == 0) {
+            E toReturn = head.data;
+            head = head.next;
+            numItems--;
+            return toReturn;
+        } else {
+            Node<E> temp = head;
+            for (int i = 0; i < pos; i++) {
+                temp = temp.next;
+            }
+            E toReturn = temp.data;
+            temp.next = temp.next.next;
+            numItems--;
+            return toReturn;
+        }
+    }
+    \end{lstlisting}
+
+    Problem 1: the end condition of the for loop entails that once the loop is over, temp refers to the node at position pos. This means that we can't modify the previous node to point to the correct one. The correct end condition should be i < pos - 1
+    
+    Problem 2: this function doesnt account for the case where pos > numItems. 
+    
+    Problem 3: does not account for the case where pos < 0
+    
+    Problem 4: this function doesnt account for the case where the linked list is empty.
+
+    problem 2 and 3 fix: if (pos < 0 || pos > numItems) { throw new IndexOutOfBoundsException(); }
+
+    problem 4 fix: if (head == null) {
+            return null;
+        }
+    
+    
+\end{enumerate}
+
+
+\end{document}

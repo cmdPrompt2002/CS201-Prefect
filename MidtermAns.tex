@@ -1,0 +1,301 @@
+\documentclass[letter]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{stmaryrd}
+
+%% Sets page size and margins
+\usepackage[top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{array}
+\usepackage[shortlabels]{enumitem}
+\usepackage[final]{pdfpages}
+\usepackage[normalem]{ulem}
+\usepackage{cancel}
+\usepackage{xspace,mdwlist}
+\usepackage{algorithmic}
+\usepackage{mathtools}
+\usetikzlibrary{calc}
+
+\usepackage{courier} %% Sets font for listing as Courier.
+\usepackage{listings, xcolor}
+\lstset{
+tabsize = 4, %% set tab space width
+showstringspaces = false, %% prevent space marking in strings, string is defined as the text that is generally printed directly to the console
+numbers = left, %% display line numbers on the left
+commentstyle = \color{green}, %% set comment color
+keywordstyle = \color{blue}, %% set keyword color
+stringstyle = \color{red}, %% set string color
+rulecolor = \color{black}, %% set frame color to avoid being affected by text color
+basicstyle = \small \ttfamily , %% set listing font and size
+breaklines = true, %% enable line breaking
+numberstyle = \tiny,
+}
+
+
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{claim}{Claim}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+
+\def\coursename{CS 201: Data Structures}
+
+%% make title box
+\newcommand{\header}[1]{%
+	\begin{center}
+		\fbox{
+			\begin{minipage}{6in}
+				\textbf{\coursename} \hfill       \\
+				\textit{#1} \hfill \textit{\today}
+			\end{minipage}
+		}
+	\end{center}
+	\vspace*{4mm}
+}
+
+\def\problem#1#2#3{
+\fbox{
+\begin{minipage}{0.8\textwidth}
+{\sc #1:}
+
+\begin{description*}
+\item[Given:] #2
+\item[Find:] #3
+\end{description*}
+\end{minipage}
+}
+\bigskip
+}
+
+
+\begin{document}
+
+\header{Exam prep}
+
+\begin{enumerate} [1.]
+    \item Java OOP
+    \begin{itemize}
+        \item [(a)] What is a disadvantage of making a data field in a class public? \\
+
+        \textbf{Users of your class can directly access and change the data field. If you were only allowing them to access the data field through setter and getter methods, you could add in statements to check that the data is viable (ie negative numbers not allowed for GPAs, no empty strings for names, etc), but you can’t control input if the variables are public.}\\
+
+        \item [(b)] Describe the difference between inheritance and interfaces. Give an example of when you may want to use inheritance in your code, and when you may want to use an interface. \\
+
+        \textbf{Inheritance is when a class is a subtype of the class it inherits from. It can access the methods of the superclass, and the superclass itself is a fully implemented class. An interface describes the methods that a class should have. It does not actually implement any of the methods, just contains method signatures. You may want to use an interface when you’re writing many classes, each of which must facilitate the same functionality (particularly if different team members will be writing each class). You may want to use inheritance if you have a bunch of objects who will share some functionality, but each of which need to behave differently in certain cases.}\\
+        
+        \item [(c)] Consider the following inheritance hierarchy. (Modified from USC). 
+
+        \begin{verbatim}
+public class Display {
+    public void something() {
+        System.out.println("Foo!");
+    }
+}
+
+public class DiceDisplay extends Display {
+    private int numSides;
+
+    //Constructor
+    public DiceDisplay(int numSides) {
+        this.numSides = numSides;
+    }
+
+    @Override
+    public void something() {
+        System.out.println("Zap!");
+    }
+    
+    public int showNumSides() {
+        System.out.println(numSides);
+    }
+}
+        \end{verbatim}
+
+    What is the output each following case? Can you identify which lines will produce an error?\\\\
+    Display A = new Display();\\
+    A.something();// output: Foo!\\
+    A.showNumSides();// Error\\
+    ((DiceDisplay) A).showNumSides();// Error, because DiceDisplay is a subclass of Display, but the variable type cannot be more specific than the object type. \\
+    
+    Display B = new DiceDisplay(1);\\
+    B.something(); //output: Zap!\\
+    B.showNumSides();// Error \\
+    ((DiceDisplay) B).showNumSides(); Output: 1\\
+
+    DiceDisplay C = new DiceDisplay(2);\\
+    C.something(); Output: Zap!\\
+    C.showNumSides(); Output: 2\\
+    ((Display) C).something(); Output: Zap! (because despite that the variable type is Display, the object's type remains a DiceDisplay, so C.something() is going to use the DiceDisplay implementation of something()) (also see (d) for further explanation)\\
+
+    \item [(d)] How does variable type and object type determines which methods we can perform?\\
+
+    \textbf{The object type determines which implementation we can use. For example, the object type that is referenced by the variable A is Display. Thus, A.something() is going to use the Display implementation of something(). In contrast, the object type that is refererenced by B is a DiceDisplay object, so B.something() will use the DiceDisplay implementation of something()}\\
+    
+    \textbf{The variable type constrains which methods we can use. For example, the type of variable A and B is Display, which means that we cannot call any methods defined in the DiceDisplay class on A and B.}\\ 
+    
+    \textbf{So why does ((DiceDisplay) B).showNumSides() work? When we perform type casting such as ((DiceDisplay) B), we change type of B from Display to DiceDisplay, thus we can now use methods that are defined in the DiceDisplay class.}\\     
+    
+    \end{itemize}
+
+
+    \item [(e)] In the constructor of VeryFun, what is the purpose of super(title)? What does it do? \\
+    
+    \textbf{Because the variable title is an instance variable of the Fun class, we have to call the Fun constructor so that title can be declared and assigned. The \textbf{super()} calls the constructor of the Fun class.}
+
+        \begin{verbatim}
+public class Fun {
+    private String title;
+
+    public Fun(String title) {
+        this.title = title;
+    }
+    
+    public void potato(int a) {
+        System.out.println(a);
+        System.out.println(title);
+    }
+}
+public class VeryFun extends Fun {
+    private String title2;
+
+    public VeryFun(String title, String title2) {
+        super(title); //WHY DO WE NEED THIS?
+        this.title2 = title2;
+    }
+
+    public void potato(int a) {
+        int b = a + 1;
+        System.out.println(b);
+    }
+
+    public void strawberry() {
+        System.out.print(title2);
+    }
+
+}
+        
+        \end{verbatim}
+
+    
+
+    \item Lists
+    \begin{itemize}
+        \item [(a)] Complete the following table by adding the runtime for each method: 
+        
+
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|l|l|l|l|}
+\hline
+Method & ArrayList & Singly linked list & Doubly linked list \\ \hline
+add(E item) & O(1) amoirtized*, O(n) worst case & O(n) & \begin{tabular}[c]{@{}l@{}}O(1) \\ (because we have \\ immediate access to the tail)\end{tabular} \\ \hline
+add(E item, int pos) & \begin{tabular}[c]{@{}l@{}}O(n) worst\\  (when we need to resize array \\ or when pos = 0 and \\ need to shift every item to the right\end{tabular} & O(n) & O(n) \\ \hline
+remove(int pos) & O(n) worst (when pos = 0) & O(n) & O(n) \\ \hline
+contains(E item) & \begin{tabular}[c]{@{}l@{}}O(n) worst\\  (when pos = numItems - 1)\end{tabular} & O(n) & O(n) \\ \hline
+get(int pos) & O(1) & O(n) & O(n) \\ \hline
+isEmpty() & \begin{tabular}[c]{@{}l@{}}O(1) (only need to\\  check if numItems == 0)\end{tabular} & O(1) & O(1) \\ \hline
+size() & O(1) (only need to return numItems) & O(1) & O(1) \\ \hline
+\end{tabular}%
+}
+
+\textbf{*Why is add(E item) O(1) amortized? As the array grows in size, the frequency that we have to expand the array also decreases. If we keep adding stuff to the array forever, the [number of times that we add without needing to expand the array (O(1))] outweighs the [number of times that we add and need to expand the array ((O(n))] by a lot. Thus, the amortized runtime, which concerns behavior in the long term, is O(1).}\\
+
+
+        \item [(b)] If I expect to be inserting a lot of elements at the beginning of a list, should I use a dynamic array (like arrayList) or a Linked List? Why? (Question from Ellie Mamantov)\\
+
+        \textbf{You should use a linked list. Each time you insert an item at the head of an array list you must shift all other elements over by one, for a run time of O(n). However, inserting an element at the head of a linked list only requires creating a new node and shifting pointers, and can take place in O(1).}
+
+        \item [(c)] Write a method for a singly linkedlist class \textbf{public SimpleLinkedList<E> reverse()} that returns a new linked list but with items in the reversed order.\\
+
+        For example, if lst is a linked list with items {1,2,3} then lst.reversed() should return a new linked list with items {3,2,1}
+
+\begin{verbatim}
+
+    public SimpleLinkedList<E> reverse() {
+        SimpleLinkedList<E> reversed = new SimpleLinkedList<E>();
+        
+        if (numItems > 0) {
+            
+            Node<E> temp = head; //keep track of the old list
+            reversed.add(temp.data, 0);
+            reversed.head.next = null;
+            
+            while(temp.next != null) {
+                temp = temp.next;
+                reversed.add(temp.data, 0);
+            }
+            
+        }
+        return reversed;
+    }
+
+\end{verbatim}
+    \end{itemize}
+
+    \item Radix sort: show the steps radix sort would take to sort the following numbers. 89 3 768 23 143 50 9 7 36\\
+
+    bin by ones digit: [50] [] [] [3 23 143] [] [] [36] [7] [768 [89 9]\\
+recombine: 50 3 23 143 36 7 768 89 9\\
+
+bin by tens digit: [3 7 9] [] [23] [36] [143] [50] [768] [] [89] []\\
+recombine: 3 7 9 23 36 143 50 768 89\\
+
+bin by hundreds digit: [3 7 9 23 36 50 89] [143] ... [768]\\
+recombine: 3 7 9 23 36 50 89 143 768\\
+
+
+    \item Big-O
+    \begin{itemize}
+        \item [(a)] When evaluating the efficiency of a program, why do we use big-O notation instead of the \textit{performance}, which is the actual time to run the program?\\
+
+        \textbf{Performance depends on what machine we are running the program on, and how many tasks the current machine is running. Thus, performance is an unreliable way to measure program efficiency. Big-O is better because it is constant across different machine type or the number of running tasks.\\}
+                    
+        \item [(b)] In one sentence, what does big-O measure?\\
+
+        \textbf{How execution time, or the number of operations, increases with input size.\\}
+
+        \item [(c)] What is the big-O of the following method? \textbf{O(n)}
+
+        \begin{verbatim}
+public static void hmmmmmm(int n) {
+    for (int i=0; i < n; i++) {
+        for (int j = 0; j < 1000000; j++) {
+            System.out.println("Good luck!") //You may assume that this is O(1)
+        }
+    }
+}
+        \end{verbatim}
+        \item [(d)] What is the big-O of the following method? \textbf{O($n^2$)}
+
+\begin{verbatim}
+public Integer[] whatIsThis(int numItems) {
+    Integer[] numArray = new Integer[numItems];
+    for (int i=0; i < numItems; i++) {
+        int sum = 0;
+        for (int j = i; j < numItems; j++) {
+            sum += j;
+        }
+        numArray[i] = sum;
+    }
+    return numArray;
+}
+\end{verbatim}
+        
+
+        
+    \end{itemize}    
+\end{enumerate}
+\end{document}

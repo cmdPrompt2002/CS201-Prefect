@@ -1,0 +1,135 @@
+\documentclass[letter]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{stmaryrd}
+
+%% Sets page size and margins
+\usepackage[top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{array}
+\usepackage[shortlabels]{enumitem}
+\usepackage[final]{pdfpages}
+\usepackage[normalem]{ulem}
+\usepackage{cancel}
+\usepackage{xspace,mdwlist}
+\usepackage{algorithmic}
+\usepackage{mathtools}
+\usetikzlibrary{calc}
+
+\usepackage{courier} %% Sets font for listing as Courier.
+\usepackage{listings, xcolor}
+\lstset{
+tabsize = 4, %% set tab space width
+showstringspaces = false, %% prevent space marking in strings, string is defined as the text that is generally printed directly to the console
+numbers = left, %% display line numbers on the left
+commentstyle = \color{green}, %% set comment color
+keywordstyle = \color{blue}, %% set keyword color
+stringstyle = \color{red}, %% set string color
+rulecolor = \color{black}, %% set frame color to avoid being affected by text color
+basicstyle = \small \ttfamily , %% set listing font and size
+breaklines = true, %% enable line breaking
+numberstyle = \tiny,
+}
+
+
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{claim}{Claim}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+
+\def\coursename{CS 201: Data Structures}
+
+%% make title box
+\newcommand{\header}[1]{%
+	\begin{center}
+		\fbox{
+			\begin{minipage}{6in}
+				\textbf{\coursename} \hfill       \\
+				\textit{#1} \hfill \textit{\today}
+			\end{minipage}
+		}
+	\end{center}
+	\vspace*{4mm}
+}
+
+\def\problem#1#2#3{
+\fbox{
+\begin{minipage}{0.8\textwidth}
+{\sc #1:}
+
+\begin{description*}
+\item[Given:] #2
+\item[Find:] #3
+\end{description*}
+\end{minipage}
+}
+\bigskip
+}
+
+
+\begin{document}
+
+\header{Exam prep}
+
+\begin{enumerate} [1.]
+
+    \item Compare and contrast
+    \begin{itemize}
+        \item ADT vs Interface
+        \item Inheritance vs Implementation
+        \item Method overloading vs method overriding
+        \item Primitive type vs reference type
+    \end{itemize}
+
+    \item Assume that Shape is an interface and Rectangle and Triangle are classes that implement Shape. Which of the following are valid statements?
+
+    \begin{itemize}
+        \item [(a)] Rectangle myRectangle = new Rectangle();
+        \item [(b)] Shape mySecondRectangle = new Rectangle();
+        \item [(c)] Triangle myTriangle = new Shape();
+        \item [(d)] Triange mySecondTriangle = new Rectangle();
+        \item [(e)] Shape myShape = new Shape();
+    \end{itemize}
+    
+    \item Write the steps that an algorithm might take to efficiently check for valid parenthetical statements. (Modified from UIUC).\\
+
+\textbf{
+declare the stack variable
+for each item in the String of brackets:
+    if item is an opening bracket:
+        push item to stack
+    else if item is a closing bracket:
+        pop an item from the stack
+        If the popped item is NOT a matching pair for the closing bracket
+            return false
+if the stack is empty return True
+else return False}
+
+    \item The runtime complexity for the radix sort you implemented in the lab is O(n*d) where n is the number of items to be sorted, while d is the number of digits of the largest item. Why is this?\\
+
+    For each item, the algorithm will:
+        Check a particular digit of the item (constant time). If the item is too small to contain the digit, then check the next item.
+        Place the item into the corresponding queues (constant time)
+    Then, dequeue the items and return them to the original collection (also constant time).
+
+    The runtime for completing one iteration of the loop above is O(n). The number of times that the for loop is going to be executed is equal to d, the number of digits of the largest item. Thus, the runtime of radix sort is O(n*d).
+    
+    \item provide a brief overview of how you might implement dequeue() for a queue class that uses a circular array?
+ 
+\end{enumerate}
+\end{document}
